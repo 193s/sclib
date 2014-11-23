@@ -3,6 +3,22 @@ A tiny scala libary for CTFers
 
 ---------------------
 
+## Install
+```
+git clone https://github.com/193s/sclib
+cd sclib
+```
+
+```
+sbt package
+```
+=> **target/scala-\*/sclib_\*-\*.jar**
+
+```
+sbt doc
+```
+=> **target/scala-\*/api/index.html**
+
 ## example
 
 #### Hash
