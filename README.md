@@ -1,5 +1,5 @@
 # sclib
-A tiny scala libary for CTFers
+A tiny scala library for CTFers
 
 ---------------------
 
