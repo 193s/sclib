@@ -23,6 +23,15 @@ sbt doc
 
 ## example
 
+#### Hex
+```scala
+import sclib._
+
+"cafe".hex // => 51966
+BigHex("deadbeef").hex // => 3735928559: BigInt
+
+```
+
 #### Hash
 ```scala
 import sclib.Hash._
