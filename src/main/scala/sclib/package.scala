@@ -40,7 +40,12 @@ package object sclib {
     def apply(s: String) = new BigHex(s)
   }
 
+  class HexStr (i: Int) {
+    def toHex = Integer.toHexString(i)
+  }
+
   implicit def str2hexInt(str: String) = HexInt(str)
+  implicit def int2hexString(i: Int) = new HexStr(i)
 
 
   /** convert str('base#num') to decimal */
