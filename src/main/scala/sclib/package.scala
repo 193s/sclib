@@ -1,5 +1,6 @@
 import java.security.{MessageDigest => MD}
 import java.util.Base64
+import java.io.{InputStream, InputStreamReader, BufferedReader}
 
 package object sclib {
   /** Prints execution time of proc */
@@ -40,12 +41,8 @@ package object sclib {
     def apply(s: String) = new BigHex(s)
   }
 
-  class HexStr (i: Int) {
-    def toHex = Integer.toHexString(i)
-  }
 
   implicit def str2hexInt(str: String) = HexInt(str)
-  implicit def int2hexString(i: Int) = new HexStr(i)
 
 
   /** convert str('base#num') to decimal */
@@ -53,5 +50,12 @@ package object sclib {
     val base = str.takeWhile(_.isDigit).toInt
     require(2 <= base && base <= 36 && str.substring(base.toString.length).startsWith("#"))
     BigInt(str.substring(base.toString.length + 1), base)
+  }
+
+
+  //==== I/O ====//
+
+  object BufReader {
+    def apply(in: InputStream) = new BufferedReader(new InputStreamReader(in))
   }
 }
