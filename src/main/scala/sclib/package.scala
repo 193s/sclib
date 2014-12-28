@@ -1,6 +1,5 @@
 import java.security.{MessageDigest => MD}
 import java.util.Base64
-import java.io.{InputStream, InputStreamReader, BufferedReader}
 
 package object sclib {
   /** Prints execution time of proc */
@@ -53,9 +52,15 @@ package object sclib {
   }
 
 
-  //==== I/O ====//
+  implicit class SplittableList[A](list: List[A]) {
+    def splitBy(f: A => Boolean): List[List[A]] = splitList(list, f)
 
-  object BufReader {
-    def apply(in: InputStream) = new BufferedReader(new InputStreamReader(in))
+    private def splitList(xs: List[A], p: A => Boolean): List[List[A]] = {
+      val (a, b) = xs.span((a: A) => !p(a))
+      b.isEmpty match {
+        case true  => List[List[A]](a)
+        case false => List[List[A]](a) ++ splitList(b.tail, p)
+      }
+    }
   }
 }
