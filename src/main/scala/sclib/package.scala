@@ -16,50 +16,41 @@ package object sclib {
         .digest(str.getBytes)
     ).toString(16)
 
+  private val base64encoder = Base64.getEncoder
+  private val base64decoder = Base64.getDecoder
   /** base64 encode */
-  def base64(str: String) = new String(Base64.getEncoder.encode(str.getBytes))
-  /** base64 encode without padding */
-  def base64noPadding(str: String) = new String(Base64.getEncoder.withoutPadding.encode(str.getBytes))
+  def base64encode(str: String) = new String(base64encoder.encode(str.getBytes))
+  /** base64 encode (no padding) */
+  def base64noPadding(str: String) = new String(base64encoder.withoutPadding.encode(str.getBytes))
   /** base64 decode */
-  def base64decode(str: String) = new String(Base64.getDecoder.decode(str))
+  def base64decode(str: String) = new String(base64decoder.decode(str))
 
 
-  /** hex string (int) **/
-  class HexInt private(s: String) {
-    def hex = Integer.parseInt(s, 16)
-  }
-  object HexInt {
-    def apply(s: String) = new HexInt(s)
-  }
 
-  /** hex string (BigInt) **/
-  class BigHex private(s: String) {
-    def hex = BigInt(s, 16)
-  }
-  object BigHex {
-    def apply(s: String) = new BigHex(s)
-  }
-
-
-  implicit def str2hexInt(str: String) = HexInt(str)
-
-
-  /** convert str('base#num') to decimal */
-  def base(str: String) = {
-    val base = str.takeWhile(_.isDigit).toInt
-    require(2 <= base && base <= 36 && str.substring(base.toString.length).startsWith("#"))
-    BigInt(str.substring(base.toString.length + 1), base)
+  /** rich string */
+  implicit class RichStr(val s: String) {
+    def base(b: Int) = BigInt(s, b)
+    def bin = base(2)
+    def oct = base(8)
+    def hex = base(16)
+    def value = base(10)
+    def base64enc = base64encode(s)
+    def base64dec = base64decode(s)
+    def md5 = sclib.hash(Hash.MD5, s)
+    def sha256 = sclib.hash(Hash.SHA256, s)
+    def sha512 = sclib.hash(Hash.SHA512, s)
+    def hash(algorithm: String) = sclib.hash(algorithm, s)
   }
 
 
-  implicit class SplittableList[A](list: List[A]) {
-    def splitBy(f: A => Boolean): List[List[A]] = splitList(list, f)
+  implicit class SplittableList[T](list: List[T]) {
+    def splitBy(f: T => Boolean): List[List[T]] = splitList(list, f)
 
-    private def splitList(xs: List[A], p: A => Boolean): List[List[A]] = {
-      val (a, b) = xs.span((a: A) => !p(a))
+    private def splitList(xs: List[T], p: T => Boolean): List[List[T]] = {
+      val (a, b) = xs.span((a: T) => !p(a))
       b.isEmpty match {
-        case true  => List[List[A]](a)
-        case false => List[List[A]](a) ++ splitList(b.tail, p)
+        case true  => List[List[T]](a)
+        case false => List[List[T]](a) ++ splitList(b.tail, p)
       }
     }
   }

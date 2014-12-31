@@ -27,9 +27,7 @@ sbt doc
 ```scala
 import sclib._
 
-"cafe".hex // => 51966
-BigHex("deadbeef").hex // => 3735928559: BigInt
-
+"deadbeef".hex // => 3735928559: BigInt
 ```
 
 
@@ -37,8 +35,8 @@ BigHex("deadbeef").hex // => 3735928559: BigInt
 ```scala
 import sclib._
 
-base64("aaaaa")  // => "YWFhYWE="
-base64decode("YWFhYWEK")  // => "aaaaa\n"
+base64encode("aaaaa")  // => "YWFhYWE="
+base64decode("QUJDREVGRw==")  // => "ABCDEFG"
 
 md5("aaaaa")  // => 594f803b380a41396ed63dca39503542
 hash("sha-256", "abc")  // => -4587e94070fe3015bebebf21a251dddc4ffc9e5c69e885634bef009e0dffea53
