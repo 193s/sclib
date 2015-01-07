@@ -21,7 +21,12 @@ $ sbt package
 ## Example
 
 ```scala
-"FLAG".md5.hex.toString.map(_.toInt.toBinaryString).toList.toString.base64enc.print```=>```TGlzdCgxMTAwMTAsIDExMDAwMCwgMTEwMDExLCAxMTAwMTEsIDExMTAwMCwgMTEwMTAxLCAxMTAwMDAsIDExMDEwMCwgMTEwMTEwLCAxMTAxMTEsIDExMTAwMSwgMTEwMTExLCAxMTEwMDAsIDExMDEwMSwgMTEwMTExLCAxMTEwMDEsIDExMDEwMSwgMTEwMDExLCAxMTAxMDAsIDExMDExMSwgMTEwMDExLCAxMTAwMDAsIDExMDExMSwgMTExMDAxLCAxMTAxMDEsIDExMDExMCwgMTEwMDAwLCAxMTAxMTEsIDExMDAwMSwgMTEwMDExLCAxMTAwMTAsIDExMDExMSwgMTExMDAwLCAxMTAxMDEsIDExMDAxMSwgMTEwMDEwLCAxMTAwMTAsIDExMDEwMCk=```
+"FLAG".md5.hex.toString.map(_.toInt.toBinaryString).toList.toString.base64enc.print
+```
+result:
+```
+TGlzdCgxMTAwMTAsIDExM......DEwLCAxMTAwMTAsIDExMDEwMCk=
+```
 
 
 #### Crypto/Hash
