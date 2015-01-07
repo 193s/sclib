@@ -1,7 +1,7 @@
 # sclib
 A tiny scala library for CTFers
 
-Scaladoc API: [193s.github.io/sclib/doc/1.1.0/](193s.github.io/sclib/doc/1.1.0/)
+Scaladoc API: [193s.github.io/sclib/doc/1.1.0/](https://193s.github.io/sclib/doc/1.1.0/)
 
 ---------------------
 
