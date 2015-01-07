@@ -18,14 +18,13 @@ $ sbt package
 => **target/scala-\*/sclib_*-1.1.jar**
 
 
-## example
+## Example
 
-#### Hex
 ```scala
-import sclib._
-
-"deadbeef".hex // => 3735928559: BigInt
+"FLAG".md5.hex.toString.map(_.toInt.toBinaryString).toList.toString.base64enc.print
 ```
+=>
+```TGlzdCgxMTAwMTAsIDExMDAwMCwgMTEwMDExLCAxMTAwMTEsIDExMTAwMCwgMTEwMTAxLCAxMTAwMDAsIDExMDEwMCwgMTEwMTEwLCAxMTAxMTEsIDExMTAwMSwgMTEwMTExLCAxMTEwMDAsIDExMDEwMSwgMTEwMTExLCAxMTEwMDEsIDExMDEwMSwgMTEwMDExLCAxMTAxMDAsIDExMDExMSwgMTEwMDExLCAxMTAwMDAsIDExMDExMSwgMTExMDAxLCAxMTAxMDEsIDExMDExMCwgMTEwMDAwLCAxMTAxMTEsIDExMDAwMSwgMTEwMDExLCAxMTAwMTAsIDExMDExMSwgMTExMDAwLCAxMTAxMDEsIDExMDAxMSwgMTEwMDEwLCAxMTAwMTAsIDExMDEwMCk=```
 
 
 #### Crypto/Hash
