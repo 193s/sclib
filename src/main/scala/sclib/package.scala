@@ -8,7 +8,18 @@ import java.util.Base64
 import java.security.{MessageDigest => MD}
 
 package object sclib {
-  /** Prints execution time of proc */
+  /** Sets of characters */
+  object Chars {
+    val digits          = ('0' to '9').toSeq
+    val lower_alphabets = ('a' to 'z').toSeq
+    val upper_alphabets = ('A' to 'Z').toSeq
+    val alphabets       = lower_alphabets ++ upper_alphabets
+    val alphaOrDigits   = digits ++ alphabets
+    val printableChars  = (32 to 126).map(_.toChar).toSeq
+  }
+
+
+  /** prints execution time(ms) of `proc` */
   def printExecTime(proc: => Unit) = {
     val start = System.currentTimeMillis
     proc
@@ -22,8 +33,8 @@ package object sclib {
         .digest(str.getBytes)
     ).toString(16)
 
-  private lazy val base64encoder = Base64.getEncoder
-  private lazy val base64decoder = Base64.getDecoder
+  private val base64encoder = Base64.getEncoder
+  private val base64decoder = Base64.getDecoder
   /** base64 encode */
   def base64encode(str: String) = new String(base64encoder.encode(str.getBytes))
   /** base64 encode (no padding) */
@@ -35,15 +46,15 @@ package object sclib {
 
   /** rich string */
   implicit class RichStr(val s: String) {
-    /** n-ary string to int */
+    /** n-ary string to BigInt */
     def base(n: Int) = BigInt(s, n)
-    /** binary string to int */
+    /** binary string to BigInt */
     def bin = base(2)
-    /** octal string to int */
+    /** octal string to BigInt */
     def oct = base(8)
-    /** hex string to int */
+    /** hex string to BigInt */
     def hex = base(16)
-    /** decimal string to int */
+    /** decimal string to BigInt */
     def value = base(10)
 
     /** base64 encode */
@@ -62,15 +73,22 @@ package object sclib {
     def print() = println(s)
     /** print to `writer` with EOL */
     def print(writer: PrintWriter) = writer.println(s)
-    /** print to `file` */
-    def print(file: File) = new PrintWriter(file)
+    /** print to `file` with EOL */
+    def print(file: File) = printToFile(file)(_.println(s))
   }
 
-  def printToFile(f: String)(op: PrintWriter => Unit): Unit =
-    printToFile(new File(f))(op)
+  object File {
+    /** java.io.File */
+    def apply(file: String) = new File(file)
+  }
 
-  def printToFile(f: File)(op: PrintWriter => Unit) {
-    val p = new PrintWriter(f)
+  /** print to `file` */
+  def printToFile(file: String)(op: PrintWriter => Unit): Unit =
+    printToFile(new File(file))(op)
+
+  /** print to `file` */
+  def printToFile(file: File)(op: PrintWriter => Unit) {
+    val p = new PrintWriter(file)
     try op(p) finally p.close()
   }
 
@@ -89,9 +107,17 @@ package object sclib {
     new String(buf)
   }
 
-  // def system(str: String): String = Process(str)!!
+  import scala.language.postfixOps
+  import scala.sys.process.Process
+  /** execute command (sync) */
+  def system(cmd: String): String = Process(cmd)!!
+
+  /** execute command (async) */
+  def run(cmd: String): Process = Process(cmd) run
 
 
+
+  /** splittable list */
   implicit class SplittableList[T](list: List[T]) {
     def splitBy(f: T => Boolean): List[List[T]] = splitList(list, f)
 
