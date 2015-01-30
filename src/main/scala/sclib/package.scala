@@ -8,7 +8,12 @@ import java.util.Base64
 import java.security.{MessageDigest => MD}
 
 package object sclib {
-  /** Sets of characters */
+  /** THEN */
+  implicit class Then[S](o: S) {
+    def $[T](x: S => T) = x(o)
+  }
+
+  /** Useful sets of characters */
   object Chars {
     val digits          = ('0' to '9').toSeq
     val lower_alphabets = ('a' to 'z').toSeq
