@@ -4,8 +4,6 @@ import java.io.PrintWriter
 import java.io.FileOutputStream
 import java.io.ByteArrayOutputStream
 import java.io.BufferedReader
-import java.util.Base64
-import java.security.{MessageDigest => MD}
 
 package object sclib {
   /** THEN */
@@ -32,14 +30,18 @@ package object sclib {
   }
 
 
-  def hash(algorithm: String, str: String) =
-    BigInt (
-      MD.getInstance(algorithm)
-        .digest(str.getBytes)
-    ).toString(16)
 
-  private val base64encoder = Base64.getEncoder
-  private val base64decoder = Base64.getDecoder
+  import java.security.{MessageDigest => MD}
+  def hash(algorithm: String, str: String) =
+    MD.getInstance(algorithm)
+      .digest(str.getBytes)
+      .map("%02x" format _)
+      .mkString
+
+  // == ENCRYPTION ==
+  import java.util.Base64
+  private lazy val base64encoder = Base64.getEncoder
+  private lazy val base64decoder = Base64.getDecoder
   /** base64 encode */
   def base64encode(str: String) = new String(base64encoder.encode(str.getBytes))
   /** base64 encode (no padding) */
@@ -48,8 +50,8 @@ package object sclib {
   def base64decode(str: String) = new String(base64decoder.decode(str))
 
 
-
-  /** rich string */
+  // == EXTENSION ==
+  /** Rich String */
   implicit class RichStr(val s: String) {
     /** n-ary string to BigInt */
     def base(n: Int) = BigInt(s, n)
@@ -82,8 +84,9 @@ package object sclib {
     def print(file: File) = printToFile(file)(_.println(s))
   }
 
+
+  /** shortcut for new java.io.File(string) */
   object File {
-    /** java.io.File */
     def apply(file: String) = new File(file)
   }
 
@@ -111,6 +114,9 @@ package object sclib {
     in.read(buf, 0, n)
     new String(buf)
   }
+
+
+  // == PROCESS ==
 
   import scala.language.postfixOps
   import scala.sys.process.Process
