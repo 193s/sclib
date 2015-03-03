@@ -40,12 +40,14 @@ package object sclib {
 
   // == ENCRYPTION ==
   import java.util.Base64
-  private lazy val base64encoder = Base64.getEncoder
-  private lazy val base64decoder = Base64.getDecoder
+  private lazy val base64encoder      = Base64.getEncoder
+  private lazy val base64encoderNoPad = base64encoder.withoutPadding
+  private lazy val base64decoder      = Base64.getDecoder
   /** base64 encode */
-  def base64encode(str: String) = new String(base64encoder.encode(str.getBytes))
-  /** base64 encode (no padding) */
-  def base64noPadding(str: String) = new String(base64encoder.withoutPadding.encode(str.getBytes))
+  def base64encode(str: String, padding: Boolean = false) = {
+    val encoder: Base64.Encoder = if (padding) base64encoder else base64encoderNoPad
+    new String(encoder.encode(str.getBytes))
+  }
   /** base64 decode */
   def base64decode(str: String) = new String(base64decoder.decode(str))
 
