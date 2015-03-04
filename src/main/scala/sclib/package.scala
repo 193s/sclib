@@ -44,7 +44,7 @@ package object sclib {
   private lazy val base64encoderNoPad = base64encoder.withoutPadding
   private lazy val base64decoder      = Base64.getDecoder
   /** base64 encode */
-  def base64encode(str: String, padding: Boolean = false) = {
+  def base64encode(str: String, padding: Boolean = true) = {
     val encoder: Base64.Encoder = if (padding) base64encoder else base64encoderNoPad
     new String(encoder.encode(str.getBytes))
   }
